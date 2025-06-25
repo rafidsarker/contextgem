@@ -1,0 +1,7 @@
+title: ClassificationOutput
+type: object
+properties:
+  insured_category:
+    type: string
+  policy_type:
+    type: string

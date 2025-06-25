@@ -1,0 +1,74 @@
+$schema: "http://json-schema.org/draft-07/schema#"
+title: ExtractionResult
+description: >
+  Schema for the results of data extractions from documents.
+  Each extraction result contains details about the extracted field,
+  its value, confidence score, and location within the document.
+
+type: array
+items:
+  type: object
+  description: >
+    A single extraction result, tying a canonical field name to its
+    value, confidence, rationale, and position in the source PDF.
+  properties:
+    ordinal:
+      type: integer
+      description: >
+        Ordinal number of the extraction in the document, starting from 1.
+        Useful for ordering multiple extractions.
+    field:
+      type: string
+      description: Canonical name of the extracted field.
+    extracted_value:
+      oneOf:
+        - type: string
+        - type: number
+        - type: array
+        - type: object
+        - type: boolean
+        - type: "null"
+      description: The value extracted from the document.
+    confidence:
+      type: number
+      description: Confidence score (0.0–1.0) for this extraction.
+    justification:
+      type: string
+      description: Explanation or rationale for why this value was extracted.
+    location:
+      type: object
+      description: Document location where the value was found.
+      properties:
+        page:
+          type: integer
+          description: Page number in the document (1-indexed).
+        bbox:
+          type: object
+          description: Bounding box coordinates (PDF points or pixels).
+          properties:
+            x:
+              type: number
+              description: X-coordinate of the top-left corner.
+            y:
+              type: number
+              description: Y-coordinate of the top-left corner.
+            width:
+              type: number
+              description: Width of the bounding box.
+            height:
+              type: number
+              description: Height of the bounding box.
+          required:
+            - x
+            - y
+            - width
+            - height
+      required:
+        - page
+        - bbox
+  required:
+    - field
+    - extracted_value
+    - confidence
+    - justification
+    - location
