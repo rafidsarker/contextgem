@@ -1,0 +1,243 @@
+documentTypes:
+  - name: PropertyAssetSchedule
+    description: Extract the key schedule fields from a property document.
+    extractors:
+      - field: raw_address
+        name: Raw Address
+        dataType: string
+        description: Full property address
+        example: "123 Main St, Springfield, IL"
+        aliases:
+          - Address
+          - Property Address
+          - Site Address
+        default: null
+        extractionRule: >
+          Use NER or regex to extract street, suburb, state & postcode,
+          then assemble as "{street}, {suburb} {state} {postcode}" in title case
+        required: true
+
+      - field: building
+        name: Building
+        dataType: number
+        description: Building sum insured
+        example: 250000
+        aliases:
+          - Building
+          - Building Value
+          - Building Sum Insured
+        default: null
+        extractionRule: ""
+        required: true
+
+      - field: contents
+        name: Contents
+        dataType: number
+        description: Contents sum insured
+        example: 2500
+        aliases:
+          - Contents
+          - General Property / Tools of Trade
+        default: null
+        extractionRule: ""
+        required: true
+
+      - field: stock
+        name: Stock
+        dataType: number
+        description: Stock sum insured
+        example: 50000
+        aliases:
+          - Stock Value
+          - Stock Sum Insured
+          - Consignment Stock
+        default: null
+        extractionRule: ""
+        required: true
+
+      - field: rod
+        name: ROD
+        dataType: number
+        description: Removal of Debris
+        example: 15000
+        aliases:
+          - ROD
+          - Removal of Debris
+        default: null
+        extractionRule: ""
+        required: true
+
+      - field: section_1_other
+        name: Section 1 - Other
+        dataType: number
+        description: Other Section 1 coverages
+        example: 1000000
+        aliases:
+          - Other Section 1
+        default: null
+        extractionRule: ""
+        required: true
+
+      - field: gross_profit
+        name: Gross Profit
+        dataType: number
+        description: Gross profit
+        example: 100000
+        aliases:
+          - Gross Profit
+          - Profit Sum Insured
+          - Gross Profit / Revenue
+        default: null
+        extractionRule: ""
+        required: true
+
+      - field: gross_revenue
+        name: Gross Revenue
+        dataType: number
+        description: Gross revenue
+        example: 100000
+        aliases:
+        default: null
+        extractionRule: ""
+        required: true
+
+      - field: gross_rentals
+        name: Gross Rentals
+        dataType: number
+        description: Gross rentals
+        example: 20000
+        aliases:
+          - Loss of Rent
+        default: null
+        extractionRule: ""
+        required: true
+
+      - field: wages
+        name: Wages
+        dataType: number
+        description: Wages
+        example: 20000
+        aliases:
+        default: null
+        extractionRule: ""
+        required: true
+
+      - field: cp_costs
+        name: CP Costs
+        dataType: number
+        description: CP Costs
+        example: 20000
+        aliases:
+        default: null
+        extractionRule: ""
+        required: true
+
+      - field: aicow
+        name: AICOW
+        dataType: number
+        description: Additional Increased Cost of Working
+        example: 20000
+        aliases:
+          - AICOW
+          - Additional Increased Cost of Working
+        default: null
+        extractionRule: ""
+        required: true
+
+      - field: s2_other
+        name: Section 2 - Other
+        dataType: number
+        description: Section 2 - Other
+        example: 20000
+        aliases:
+        default: null
+        extractionRule: ""
+        required: true
+
+      - field: fire_protection
+        name: Fire Protection
+        dataType: string
+        description: Descriptors for fire protection system
+        example: "sprinkler, sprinkler system, fire extinguisher, hydrant"
+        aliases:
+          - Fire Protection
+          - Sprinkler System
+        default: "Unknown"
+        extractionRule: >
+          Extract and return raw keywords (e.g. sprinkler, hydrant) for downstream classification
+        classificationRule: |
+          Underwriting guideline: Superior fire protection tends to
+          include active sprinkler systems, monitored alarms, and
+          direct hydrant connections.
+        acceptedValues:
+          - Unknown
+          - Poor
+          - Average
+          - Good
+          - Very Good
+          - Superior
+        required: true
+
+      - field: burglary_protection
+        name: Burglary
+        dataType: string
+        description: Descriptors for burglary protection
+        example: "alarm, alarm system, security patrol, CCTV"
+        aliases:
+          - Burglary
+          - Security
+        default: "Unknown"
+        extractionRule: >
+          Extract and return raw keywords (e.g. alarm, CCTV) for downstream classification
+        classificationRule: |
+          Underwriting guideline: Superior burglary protection tends
+          to include monitored alarms, deadlocks, and perimeter CCTV.
+        acceptedValues:
+          - Unknown
+          - Poor
+          - Average
+          - Good
+          - Very Good
+          - Superior
+        required: true
+
+      - field: construction
+        name: Construction Type
+        dataType: string
+        description: Descriptors of building construction type
+        example: "brick, brickwork, mixed"
+        aliases:
+          - Construction Type
+          - Building Material
+        default: "Unknown"
+        extractionRule: >
+          Extract and return raw keywords (e.g. brick, timber) for downstream classification
+        classificationRule: |
+          Underwriting guideline: Non-combustible materials (e.g. steel, concrete) rate higher than timber or mixed materials.
+        acceptedValues:
+          - Unknown
+          - Non-combustible
+          - Fire resistant
+          - Mixed
+        required: true
+
+      - field: construction_year
+        name: Year of Construction
+        dataType: string
+        description: Construction year
+        example: "2010"
+        aliases:
+          - Year of Construction
+          - Building Year
+        default: "Unknown"
+        extractionRule: >
+          Extract and return raw year or range keywords for downstream classification
+        classification_rule: |
+          Underwriting guideline: Newer construction generally has
+          improved fire/storm codes; categorize by era.
+        acceptedValues:
+          - "Pre 1935"
+          - "1935 - 1950"
+          - "1951 - 1970"
+          - "1971 - Present"
+        required: true
